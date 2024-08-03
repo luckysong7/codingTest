@@ -9,3 +9,41 @@
 첫째 줄에 DFS를 수행한 결과를, 그 다음 줄에는 BFS를 수행한 결과를 출력한다. V부터 방문된 점을 순서대로 출력하면 된다.
 """
 
+from collections import deque
+
+n, m, v = map(int, input().split())
+
+arr = [[0] * (n + 1) for _ in range(n + 1)]
+
+for _ in range(m):
+    a, b = map(int, input().split())
+    arr[a][b] = arr[b][a] = 1
+
+visited1 = [0] * (n + 1)
+visited2 = [0] * (n + 1)
+
+
+# DFS - 스택 / 재귀구조 이용
+def dfs(v):
+    visited1[v] = 1
+    print(v, end=" ")
+    for i in range(1, n + 1):
+        if not visited1[i] and arr[v][i]:
+            dfs(i)
+
+
+# BFS - 큐
+def bfs(v):
+    q = deque([v])
+    visited2[v] = 1
+    while q:
+        v = q.popleft()
+        print(v, end=" ")
+        for i in range(1, n + 1):
+            if not visited2[i] and arr[v][i]:
+                q.append(i)
+                visited2[i] = 1
+
+dfs(v)
+print()
+bfs(v)
